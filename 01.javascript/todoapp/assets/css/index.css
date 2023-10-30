@@ -1,0 +1,92 @@
+#detailPage {
+  background: #d9d9d9;
+  width: 360px;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#detailForm {
+  width: 80%;
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+#divWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+#btnAdd {
+  background-color: #79e226;
+  color: #fff;
+}
+
+#btnCancle {
+  background-color: #ef5142;
+  color: #fff;
+}
+
+#btnAdd,
+#btnCancle {
+  border-radius: 50px;
+  border: none;
+  padding: 5px 16px;
+}
+
+#title,
+#detail {
+  border-radius: 5px;
+  border: none;
+  padding: 4px;
+  width: 100%;
+}
+
+button:hover {
+  cursor: pointer;
+
+.todolist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  background-color: #d9d9d9;
+  width: 260px;
+  height: 40px;
+  border-radius: 75px;
+  color: black;
+  text-align: left;
+  justify-content: start;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.title:hover {
+  background-color: #79e226;
+}
+
+.list {
+  display: flex;
+}
+
+.check {
+  margin-right: 10px;
+  width: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+}
