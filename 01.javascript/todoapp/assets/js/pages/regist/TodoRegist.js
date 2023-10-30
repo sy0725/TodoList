@@ -1,37 +1,42 @@
 // 할일 등록
-import Header from '../../layout/Header.js';
-import Footer from '../../layout/Footer.js';
+import Header from "../../layout/Header.js";
+import Footer from "../../layout/Footer.js";
 
 const TodoRegist = function () {
-  const page = document.createElement('div');
-  page.setAttribute('id', 'detailPage');
+  const page = document.createElement("div");
+  page.setAttribute("id", "detailPage");
 
-  const detailPage = document.createElement('form');
-  page.setAttribute('id', 'detailForm');
+  const detailPage = document.createElement("form");
+  detailPage.setAttribute("id", "detailForm");
   page.appendChild(detailPage);
 
-  const title = document.createElement('input');
-  const titleContent = document.createTextNode('할 일');
+  const title = document.createElement("input");
+  title.setAttribute("id", "title");
+  title.setAttribute("placeholder", "내용을 입력하세요.");
   detailPage.appendChild(title);
-  title.appendChild(titleContent);
 
-  const detail = document.createElement('textarea');
-  const detailContent = document.createTextNode('상세 내용을 입력하세요.');
+  const detail = document.createElement("textarea");
+  detail.setAttribute("placeholder", "상세 내용을 입력하세요.");
+  detail.setAttribute("id", "detail");
   detailPage.appendChild(detail);
-  detail.appendChild(detailContent);
 
-  const btnAdd = document.createElement('button');
-  const btnAddTodo = document.createTextNode('등록');
-  btnAdd.setAttribute('type', 'submit');
+  const btnWrapper = document.createElement("div");
+  btnWrapper.setAttribute("id", "divWrapper");
+  detailPage.appendChild(btnWrapper);
+
+  const btnAdd = document.createElement("button");
+  const btnAddTodo = document.createTextNode("등록");
+  btnAdd.setAttribute("id", "btnAdd");
   btnAdd.appendChild(btnAddTodo);
-  detailPage.appendChild(btnAdd);
+  btnWrapper.appendChild(btnAdd);
 
-  const btnCancle = document.createElement('button');
-  const btnCancleTodo = document.createTextNode('취소');
+  const btnCancle = document.createElement("button");
+  const btnCancleTodo = document.createTextNode("취소");
+  btnCancle.setAttribute("id", "btnCancle");
   btnCancle.appendChild(btnCancleTodo);
-  detailPage.appendChild(btnCancle);
+  btnWrapper.appendChild(btnCancle);
 
-  page.appendChild(Header('TODO App 등록'));
+  page.appendChild(Header("TODO App 등록"));
   page.appendChild(detailPage);
   page.appendChild(Footer());
 
