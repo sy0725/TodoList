@@ -54,6 +54,7 @@ const TodoList = async function () {
 
     const btnTitle = document.createTextNode("등록");
     const btnRegist = document.createElement("button");
+    btnRegist.setAttribute("class", "enrollBtn");
     btnRegist.appendChild(btnTitle);
     content.appendChild(btnRegist);
 
