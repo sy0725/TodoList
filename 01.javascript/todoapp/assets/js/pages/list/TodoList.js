@@ -5,7 +5,7 @@ import TodoRegist from "../regist/TodoRegist.js";
 // import TodoInfo from "../info/TodoInfo.js";
 import { linkTo } from "../../Router.js";
 
-const toggleDetailTodo = function (title, content) {
+const toggleDetailTodo = function (title, content, itemId) {
   const detailTodo = document.createElement("form");
   detailTodo.setAttribute("id", "detailTodo");
 
@@ -13,9 +13,19 @@ const toggleDetailTodo = function (title, content) {
   detailTitle.value = title;
   detailTitle.setAttribute("id", "detailTitle");
 
+  let titleEdit = title;
+  detailTitle.addEventListener("change", function (e) {
+    titleEdit = e.target.value;
+  });
+
   const detailContent = document.createElement("textarea");
   detailContent.textContent = content;
   detailContent.setAttribute("id", "detailContent");
+
+  let contentEdit = content;
+  detailContent.addEventListener("change", function (e) {
+    contentEdit = e.target.value;
+  });
 
   const btnDetailWrapper = document.createElement("div");
   btnDetailWrapper.setAttribute("class", "divWrapper");
@@ -24,9 +34,27 @@ const toggleDetailTodo = function (title, content) {
   btnDetailEdit.textContent = "수정";
   btnDetailEdit.setAttribute("id", "btnAdd");
 
+  btnDetailEdit.addEventListener("click", async function (e) {
+    e.preventDefault();
+    const body = { title: titleEdit, content: contentEdit };
+    const detailEdit = await axios.patch(
+      `http://localhost:33088/api/todolist/${itemId}`,
+      body
+    );
+    linkTo("/");
+  });
+
   const btnDetailDelete = document.createElement("button");
   btnDetailDelete.textContent = "삭제";
   btnDetailDelete.setAttribute("id", "btnCancle");
+
+  btnDetailDelete.addEventListener("click", async function (e) {
+    e.preventDefault();
+    const detailDelete = await axios.delete(
+      `http://localhost:33088/api/todolist/${itemId}`
+    );
+    linkTo("/");
+  });
 
   detailTodo.appendChild(detailTitle);
   detailTodo.appendChild(detailContent);
@@ -87,7 +115,7 @@ const TodoList = async function () {
             `http://localhost:33088/api/todolist/${item._id}`
           );
           const { title, content } = detailResponse.data?.item;
-          const openToggleDetail = toggleDetailTodo(title, content);
+          const openToggleDetail = toggleDetailTodo(title, content, item._id);
           if (showToggle) {
             event.preventDefault();
 
