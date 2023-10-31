@@ -6,7 +6,8 @@
 
 - 🎨 디자인 시안 : [Figma](https://www.figma.com/file/6gI7VgNfHjo6CKSqypsdX2/Untitled?type=design&node-id=0%3A1&mode=design&t=muOah9kJpVhcm727-1)
 
-<img src= ./todo.png alt="프로젝트 결과물" style="display: block; margin: 0 auto; width:300px">
+<img src= ./todo.png alt="프로젝트 메인페이지 결과물" style="display: inline; margin: 0 auto; width:300px">
+<img src= ./todoRegist.png alt="프로젝트 등록페이지 결과물" style="display: inline; margin-bottom: 180px; width:260px">
 
 ### 🎯 목표
 
@@ -27,7 +28,8 @@
 
 - **2일차(10/31)**
 
-  - **`정소이, 전선용`** : 리스트 렌더링 - 맨 상단 추가, 할일완료 - 취소선, 맨 하단 정렬
+  - **`공통`** : 전체삭제 기능
+  - **`정소이, 전선용`** : 리스트 렌더링 - 맨 상단 추가, 할일완료 - 취소선
   - **`정명진, 정소희`** : 상세조회 - 토글, 조회 내 수정, 삭제 기능
 
 ### ⚙️ 상세 기능
@@ -36,6 +38,7 @@
 - todolist 생성
 - todolist 수정
 - todolist 삭제
+- todolist 전체삭제
 
 ## 💻 서버 구동
 
