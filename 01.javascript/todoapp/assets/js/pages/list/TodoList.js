@@ -53,9 +53,6 @@ const TodoList = async function () {
     const ul = document.createElement("ul");
     ul.setAttribute("class", "todolist");
     response.data?.items.forEach(async (item) => {
-      //test
-      console.log(item);
-
       // li
       const li = document.createElement("li");
       const todoContent = document.createElement("div");
@@ -85,54 +82,26 @@ const TodoList = async function () {
 
       let showToggle = true;
       li.addEventListener("click", async function (event) {
-        // 브라우저의 기본 동작 취소(<a> 태그 동작 안하도록)
+        if (event.target.classList.contains("title")) {
+          const detailResponse = await axios(
+            `http://localhost:33088/api/todolist/${item._id}`
+          );
+          const { title, content } = detailResponse.data?.item;
+          const openToggleDetail = toggleDetailTodo(title, content);
+          if (showToggle) {
+            event.preventDefault();
 
-        const detailResponse = await axios(
-          `http://localhost:33088/api/todolist/${item._id}`
-        );
-        const { title, content } = detailResponse.data?.item;
-        const openToggleDetail = toggleDetailTodo(title, content);
-        if (showToggle) {
-          event.preventDefault();
-
-          todoContent.appendChild(openToggleDetail);
-        } else {
-          todoContent.removeChild(todoContent.lastChild);
+            todoContent.appendChild(openToggleDetail);
+          } else {
+            todoContent.removeChild(todoContent.lastChild);
+          }
+          showToggle = !showToggle;
         }
-        showToggle = !showToggle;
       });
 
       li.appendChild(checkbox);
       li.appendChild(todoContent);
       todoContent.appendChild(title);
-      // if (showToggle) {
-      //   console.log(item);
-      //   const detailResponse = await axios(
-      //     `http://localhost:33088/api/todolist/${item._id}`
-      //   );
-      //   const { title, content } = detailResponse.data?.item;
-      //   console.log(detailResponse);
-
-      //   const openToggleDetail = toggleDetailTodo(title, content);
-      //   li.appendChild(openToggleDetail);
-      // } else {
-      //   li.appendChild(checkbox);
-      //   li.appendChild(title);
-      // }
-
-      ///////////
-      // li.addEventListener("click", async function (event) {
-      //   // 브라우저의 기본 동작 취소(<a> 태그 동작 안하도록)
-      //   event.preventDefault();
-      //   const detailResponse = await axios(
-      //     `http://localhost:33088/api/todolist/${item._id}`
-      //   );
-      //   const { title, content } = detailResponse.data?.item;
-      //   console.log(detailResponse);
-
-      //   const openToggleDetail = toggleDetailTodo(title, content);
-      //   li.appendChild(openToggleDetail);
-      // });
       ul.appendChild(li);
     });
     content.appendChild(ul);
