@@ -2,7 +2,6 @@
 import Header from "../../layout/Header.js";
 import Footer from "../../layout/Footer.js";
 import TodoRegist from "../regist/TodoRegist.js";
-// import TodoInfo from "../info/TodoInfo.js";
 import { linkTo } from "../../Router.js";
 
 const toggleDetailTodo = function (title, content, itemId) {
@@ -75,36 +74,50 @@ const TodoList = async function () {
   content.setAttribute("id", "content");
   let response;
   try {
+    const instance = axios.create({
+      baseURL: 'http://localhost:33088/api',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     response = await axios("http://localhost:33088/api/todolist");
 
     // ul
     const ul = document.createElement("ul");
     ul.setAttribute("class", "todolist");
-    response.data?.items.forEach(async (item) => {
+    response.data?.items.reverse().forEach(async (item) => {
       // li
       const li = document.createElement("li");
       const todoContent = document.createElement("div");
       const checkbox = document.createElement("input");
       const title = document.createElement("div");
-      title.setAttribute("class", "title");
+
+      if (item.done) {
+        title.setAttribute("class", "title isDone")
+        checkbox.checked = true;
+      } else {
+        title.setAttribute("class", "title")
+        checkbox.checked = false;
+      }
 
       checkbox.setAttribute("type", "checkbox");
       checkbox.setAttribute("class", "check");
       li.setAttribute("class", "list");
       const text = document.createTextNode(item.title);
 
-      // const todoInfoLink = document.createElement("a");
-      // todoInfoLink.setAttribute("href", `info?_id=${item._id}`);
-      // const title = document.createTextNode(item.title);
-
-      /*
-      todoInfoLink.addEventListener("click", async function (event) {
-        // 브라우저의 기본 동작 취소(<a> 태그 동작 안하도록)
-        event.preventDefault();
-        const infoPage = await TodoInfo({ _id: item._id });
-        document.querySelector("#page").replaceWith(infoPage);
-      });
-      */
+      checkbox.addEventListener('click', async function () {
+        await instance
+          .patch(`/todolist/${item._id}`, {
+            done: checkbox.checked ? true : false,
+          })
+          .then(function (response) {
+            console.log(response);
+            checkbox.checked ? title.setAttribute("class", "title isDone") : title.setAttribute("class", "title");
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      })
 
       title.appendChild(text);
 
@@ -134,24 +147,26 @@ const TodoList = async function () {
     });
     content.appendChild(ul);
 
-    // const btnTitle = document.createTextNode("등록");
-    const btnRegist = document.createElement("button");
-    const btnTitle = document.createTextNode("등록");
+    const btnMainWrapper = document.createElement("div");
+    btnMainWrapper.setAttribute("id", "btnMainWrapper");
+    content.appendChild(btnMainWrapper);
+
+    const btnRegist = document.createElement('button');
+    const btnTitle = document.createTextNode('등록');
     btnRegist.setAttribute("class", "enrollBtn");
     btnRegist.appendChild(btnTitle);
-    content.appendChild(btnRegist);
+    btnMainWrapper.appendChild(btnRegist);
 
-    btnRegist.addEventListener("click", () => {
-      linkTo("regist");
-    });
-    btnRegist.setAttribute("class", "enrollBtn");
-    btnRegist.appendChild(btnTitle);
-    content.appendChild(btnRegist);
+    const btnReset = document.createElement('button');
+    const btnResetTitle = document.createTextNode('초기화');
+    btnReset.setAttribute("id", "resetBtn");
+    btnReset.appendChild(btnResetTitle);
+    btnMainWrapper.appendChild(btnReset);
 
-    btnRegist.addEventListener("click", () => {
-      const registPage = TodoRegist();
-      document.querySelector("#page").replaceWith(registPage);
+    btnRegist.addEventListener('click', () => {
+      linkTo('regist');
     });
+
   } catch (err) {
     const error = document.createTextNode("일시적인 오류 발생");
     content.appendChild(error);
