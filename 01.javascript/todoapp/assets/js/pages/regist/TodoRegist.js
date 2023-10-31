@@ -12,7 +12,8 @@ const TodoRegist = function () {
 
   const title = document.createElement("input");
   title.setAttribute("id", "title");
-  title.setAttribute("placeholder", "내용을 입력하세요.");
+  title.setAttribute("type", "text")
+  title.setAttribute("placeholder", "할일을 입력하세요.");
   detailPage.appendChild(title);
 
   const detail = document.createElement("textarea");
@@ -36,9 +37,41 @@ const TodoRegist = function () {
   btnCancle.appendChild(btnCancleTodo);
   btnWrapper.appendChild(btnCancle);
 
-  page.appendChild(Header("TODO App 등록"));
+  page.appendChild(Header("Make Your Plan"));
   page.appendChild(detailPage);
   page.appendChild(Footer());
+
+  const instance = axios.create({
+    baseURL: 'http://localhost:33088/api',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  btnAdd.addEventListener('click', async function (e) {
+    e.preventDefault();
+    if (!title.value) {
+      alert("할일을 입력해주세요!")
+    }
+
+    await instance
+      .post('/todolist', {
+        title: title.value,
+        content: detail.value || '상세 내용이 없습니다.'
+      })
+      .then(function (response) {
+        console.log(response);
+        location.href = 'http://localhost:3000';
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  });
+
+  btnCancle.addEventListener('click', (e) => {
+    e.preventDefault();
+    location.href = 'http://localhost:3000';
+  });
 
   return page;
 };

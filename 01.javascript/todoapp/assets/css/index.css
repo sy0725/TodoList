@@ -19,6 +19,11 @@ footer {
   text-align: center;
 }
 
+#app {
+  display: flex;
+  justify-content: center;
+}
+
 #content {
   display: flex;
   flex-direction: column;
@@ -49,6 +54,7 @@ footer {
   flex-direction: column;
 }
 
+#btnMainWrapper,
 #divWrapper {
   display: flex;
   justify-content: flex-end;
@@ -72,12 +78,20 @@ footer {
   padding: 5px 16px;
 }
 
-#title,
+#title {
+  border-radius: 5px;
+  border: none;
+  padding: 4px;
+  width: 296px;
+  height: 30px;
+}
+
 #detail {
   border-radius: 5px;
   border: none;
   padding: 4px;
-  width: 100%;
+  width: 296px;
+  height: 150px;
 }
 
 .todolist {
@@ -106,6 +120,11 @@ footer {
   background-color: #79e226;
 }
 
+.isDone {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
 .list {
   display: flex;
 }
@@ -116,9 +135,14 @@ footer {
 }
 
 .enrollBtn {
-  border-radius: 50px;
   border: none;
   padding: 5px 16px;
   width: 60px;
+  height: 30px;
+}
+
+#resetBtn {
+  border: none;
+  padding: 5px 16px;
   height: 30px;
 }
