@@ -4,6 +4,7 @@ h1 {
 
 button {
   border-radius: 50px;
+  border: none;
 }
 
 button:hover {
@@ -11,8 +12,10 @@ button:hover {
 }
 
 textarea,
+input,
 form {
   border-radius: 5px;
+  border: none;
 }
 
 footer {
@@ -73,14 +76,11 @@ footer {
 
 #btnAdd,
 #btnCancle {
-  border-radius: 50px;
-  border: none;
   padding: 5px 16px;
 }
 
 #title {
   border-radius: 5px;
-  border: none;
   padding: 4px;
   width: 296px;
   height: 30px;
@@ -88,13 +88,12 @@ footer {
 
 #detail {
   border-radius: 5px;
-  border: none;
   padding: 4px;
   width: 296px;
   height: 150px;
 }
 
-.todolist {
+#todolist {
   list-style: none;
   padding: 0;
   display: flex;
@@ -134,25 +133,36 @@ footer {
   width: 20px;
 }
 
-.enrollBtn {
-  border: none;
+#btnEnroll {
   padding: 5px 16px;
   width: 60px;
   height: 30px;
 }
 
-#resetBtn {
-  border: none;
+#btnReset {
   padding: 5px 16px;
   height: 30px;
+}
+
+#btnEnroll:hover {
+  color: white;
+  background: #79e226;
+}
+
+#btnReset:hover {
+  color: white;
+  background: #ef5142;
+}
 
 #content {
   width: 300px;
 }
-.todolist,
+
+#todolist,
 .list {
   width: 100%;
 }
+
 #detailTodo {
   background: #d9d9d9;
   width: 100%;
@@ -163,6 +173,7 @@ footer {
   padding: 10px 0;
   margin-top: 10px;
 }
+
 #detailTitle,
 #detailContent {
   background: #fff;
@@ -171,14 +182,11 @@ footer {
   padding: 4px;
 }
 
-#detailTitle {
-}
-
 #detailContent {
   height: 100px;
 }
 
-.divWrapper {
+#btnDetailWrapper {
   display: flex;
   justify-content: flex-end;
   gap: 8px;

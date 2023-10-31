@@ -3,6 +3,7 @@ import Header from "../../layout/Header.js";
 import Footer from "../../layout/Footer.js";
 import TodoRegist from "../regist/TodoRegist.js";
 import { linkTo } from "../../Router.js";
+import initDate from '../../../../api/db/initData.js'
 
 const toggleDetailTodo = function (title, content, itemId) {
   const detailTodo = document.createElement("form");
@@ -27,7 +28,7 @@ const toggleDetailTodo = function (title, content, itemId) {
   });
 
   const btnDetailWrapper = document.createElement("div");
-  btnDetailWrapper.setAttribute("class", "divWrapper");
+  btnDetailWrapper.setAttribute("id", "btnDetailWrapper");
 
   const btnDetailEdit = document.createElement("button");
   btnDetailEdit.textContent = "수정";
@@ -84,7 +85,15 @@ const TodoList = async function () {
 
     // ul
     const ul = document.createElement("ul");
-    ul.setAttribute("class", "todolist");
+    ul.setAttribute("id", "todolist");
+
+    if (!response.data.items.length) {
+      const item = document.createElement('span');
+      const itemContent = document.createTextNode('할일을 추가해주세요.')
+      item.appendChild(itemContent);
+      content.appendChild(item);
+    };
+
     response.data?.items.reverse().forEach(async (item) => {
       // li
       const li = document.createElement("li");
@@ -153,13 +162,13 @@ const TodoList = async function () {
 
     const btnRegist = document.createElement('button');
     const btnTitle = document.createTextNode('등록');
-    btnRegist.setAttribute("class", "enrollBtn");
+    btnRegist.setAttribute("id", "btnEnroll");
     btnRegist.appendChild(btnTitle);
     btnMainWrapper.appendChild(btnRegist);
 
     const btnReset = document.createElement('button');
-    const btnResetTitle = document.createTextNode('초기화');
-    btnReset.setAttribute("id", "resetBtn");
+    const btnResetTitle = document.createTextNode('전체삭제');
+    btnReset.setAttribute("id", "btnReset");
     btnReset.appendChild(btnResetTitle);
     btnMainWrapper.appendChild(btnReset);
 
@@ -167,11 +176,22 @@ const TodoList = async function () {
       linkTo('regist');
     });
 
+    btnReset.addEventListener('click', async function (e) {
+      e.preventDefault();
+      await response.data?.items.forEach(item => instance
+        .delete(`/todolist/${item._id}`)
+        .then(function (response) {
+          console.log(response);
+          linkTo('/');
+        })
+        .catch(function (error) {
+          console.log(error);
+        }));
+    })
   } catch (err) {
     const error = document.createTextNode("일시적인 오류 발생");
     content.appendChild(error);
   }
-
   page.appendChild(Header("What to do today?😙"));
   page.appendChild(content);
   page.appendChild(Footer());
