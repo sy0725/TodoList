@@ -2,9 +2,8 @@
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
-import axios, { AxiosResponse } from 'axios'
 import  toggleDetailTodo  from "./../update/TodoUpdate";
-
+import { getTodoItem, deleteTodoItem, patchTodoItem ,getTodoList} from "../../API/axios";
 
 const TodoList = async function () {
   const page = document.createElement("div");
@@ -23,24 +22,14 @@ const TodoList = async function () {
   btnRegist.setAttribute("id", "btnEnroll");
   btnReset.setAttribute("id", "btnReset");
   
-  content.appendChild(ul);
-  content.appendChild(btnMainWrapper);
+
   btnRegist.appendChild(btnTitle);
   btnReset.appendChild(btnResetTitle);
   btnMainWrapper.appendChild(btnRegist);
   btnMainWrapper.appendChild(btnReset);
   
-  let response: AxiosResponse<TodoListResponse> ;
   try {
-    const instance = axios.create({
-      baseURL: "http://localhost:33088/api",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    response = await axios<TodoListResponse>(
-      "http://localhost:33088/api/todolist"
-    );
+    const response = await getTodoList()
 
     if (!response.data.items.length) {
       const item = document.createElement("span");
@@ -48,6 +37,8 @@ const TodoList = async function () {
       item.appendChild(itemContent);
       content.appendChild(item);
     }
+    content.appendChild(ul);
+    content.appendChild(btnMainWrapper);
 
     response.data?.items.reverse().forEach(async (item) => {
       // li
@@ -71,11 +62,11 @@ const TodoList = async function () {
       }
 
       checkbox.addEventListener("click", async function () {
-        await instance
-          .patch(`/todolist/${item._id}`, {
-            done: checkbox.checked ? true : false,
-          })
-          .then(function () {
+        const body = {
+          done: checkbox.checked ? true : false,
+        };
+        await patchTodoItem(item._id, body)
+          .then(function () { 
             checkbox.checked
               ? title.setAttribute("class", "title isDone")
               : title.setAttribute("class", "title");
@@ -90,9 +81,7 @@ const TodoList = async function () {
       li.addEventListener("click", async function (event: Event) {
         if (event.target instanceof Element) {
           if (event.target!.classList.contains("title")) {
-            const detailResponse = await axios<TodoResponse>(
-              `http://localhost:33088/api/todolist/${item._id}`
-            );
+            const detailResponse = await getTodoItem(item._id)
             const { title, content } = detailResponse.data?.item;
 
             const openToggleDetail = toggleDetailTodo(title, content, item._id);
@@ -124,10 +113,8 @@ const TodoList = async function () {
     btnReset.addEventListener("click", async function (e: Event) {
       e.preventDefault();
       response.data?.items.forEach((item) =>
-        instance
-          .delete(`/todolist/${item._id}`)
+          deleteTodoItem(item._id)
           .then(function (response) {
-            console.log(response);
             linkTo("/");
           })
           .catch(function (error) {
