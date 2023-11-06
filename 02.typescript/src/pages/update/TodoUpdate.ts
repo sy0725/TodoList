@@ -1,12 +1,14 @@
 import { linkTo } from "../../Router";
-import axios from 'axios'
-
+import axios from "axios";
+import { patchTodoItem, deleteTodoItem } from "../../API/axios";
 
 // 할일 수정
 
-
-const toggleDetailTodo  = function (title : string, content : string, itemId : number) {
-
+const toggleDetailTodo = function (
+  title: string,
+  content: string,
+  itemId: number
+) {
   const detailTodo = document.createElement("form");
   const detailTitle = document.createElement("input");
   const detailContent = document.createElement("textarea");
@@ -16,7 +18,6 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
   let titleEdit = title;
   let contentEdit = content;
 
-  
   detailTodo.setAttribute("id", "detailTodo");
   detailTitle.setAttribute("id", "detailTitle");
   detailContent.setAttribute("id", "detailContent");
@@ -30,31 +31,25 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
   btnDetailDelete.textContent = "삭제";
 
   detailTitle.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLInputElement){
+    if (e.target instanceof HTMLInputElement) {
       titleEdit = e.target.value;
     }
   });
 
   detailContent.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLTextAreaElement)
-    contentEdit = e.target.value;
+    if (e.target instanceof HTMLTextAreaElement) contentEdit = e.target.value;
   });
 
   btnDetailEdit.addEventListener("click", async function (e) {
     e.preventDefault();
     const body = { title: titleEdit, content: contentEdit };
-    const detailEdit = await axios.patch<TodoResponse>(
-      `http://localhost:33088/api/todolist/${itemId}`,
-      body
-    );
+    const detailEdit = await patchTodoItem(itemId, body);
     linkTo("/");
   });
 
   btnDetailDelete.addEventListener("click", async function (e) {
     e.preventDefault();
-    const detailDelete = await axios.delete<Partial<TodoResponse>>(
-      `http://localhost:33088/api/todolist/${itemId}`
-    );
+    const detailDelete = await deleteTodoItem(itemId);
     linkTo("/");
   });
 
@@ -64,7 +59,6 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
   btnDetailWrapper.appendChild(btnDetailEdit);
   btnDetailWrapper.appendChild(btnDetailDelete);
 
-  return detailTodo
-
+  return detailTodo;
 };
 export default toggleDetailTodo;

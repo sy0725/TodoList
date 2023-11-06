@@ -7,35 +7,38 @@ const instance = axios.create({
   },
 });
 
+interface Data {
+  title: string;
+  content: string;
+  done?: boolean;
+}
+
 const getTodoList = async () => {
   const response = await instance.get<TodoListResponse>("/todolist");
   return response;
 };
 
-const deleteTodoItem = async (id: number) => {
-  const response = (await instance.delete)<Partial<TodoResponse>>(
+export const deleteTodoItem = async (id: number) => {
+  const response = await instance.delete<Partial<TodoResponse>>(
     `todolist/${id}`
   );
   return response;
 };
 
 const getTodoItem = async (id: number) => {
-  const response = (await instance.get)<TodoResponse>(`todolist/${id}`);
+  const response = await instance.get<TodoResponse>(`todolist/${id}`);
   return response;
 };
 
-const patchTodoItem = async (itemId: number) => {
-  const response = (await instance.patch)<TodoResponse>(`todolist/${itemId}`);
+export const patchTodoItem = async (itemId: number, body: Data) => {
+  const response = await instance.patch<TodoResponse>(
+    `todolist/${itemId}`,
+    body
+  );
   return response;
 };
-
-interface Data {
-  title: string;
-  content: string;
-}
 
 export const postTodoItem = async (body: Data) => {
-
   const response = await instance.post<TodoResponse>(`todolist`, body);
   return response;
 };

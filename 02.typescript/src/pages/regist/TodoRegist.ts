@@ -41,13 +41,6 @@ const TodoRegist = function () {
   btnWrapper.appendChild(btnCancle);
   page.appendChild(Footer());
 
-  const instance = axios.create({
-    baseURL: "http://localhost:33088/api",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
   btnAdd.addEventListener("click", async function (e) {
     e.preventDefault();
     if (!title.value) {
