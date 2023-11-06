@@ -3,83 +3,37 @@ import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
 import axios, { AxiosResponse } from 'axios'
+import  toggleDetailTodo  from "./../update/TodoUpdate";
 
 
 
-const toggleDetailTodo  = function (title : string, content : string, itemId : number) {
-  const detailTodo = document.createElement("form");
-  detailTodo.setAttribute("id", "detailTodo");
 
-  const detailTitle = document.createElement("input");
-  detailTitle.value = title;
-  detailTitle.setAttribute("id", "detailTitle");
-
-  let titleEdit = title;
-  detailTitle.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLInputElement){
-      titleEdit = e.target.value;
-    }
-  });
-
-  const detailContent = document.createElement("textarea");
-  detailContent.textContent = content;
-  detailContent.setAttribute("id", "detailContent");
-
-  let contentEdit = content;
-  detailContent.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLTextAreaElement)
-    contentEdit = e.target.value;
-  });
-
-  const btnDetailWrapper = document.createElement("div");
-  btnDetailWrapper.setAttribute("id", "btnDetailWrapper");
-
-  const btnDetailEdit = document.createElement("button");
-  btnDetailEdit.textContent = "수정";
-  btnDetailEdit.setAttribute("id", "btnAdd");
-
-  btnDetailEdit.addEventListener("click", async function (e) {
-    e.preventDefault();
-    const body = { title: titleEdit, content: contentEdit };
-    const detailEdit = await axios.patch<TodoResponse>(
-      `http://localhost:33088/api/todolist/${itemId}`,
-      body
-    );
-    linkTo("/");
-  });
-
-  const btnDetailDelete = document.createElement("button");
-  btnDetailDelete.textContent = "삭제";
-  btnDetailDelete.setAttribute("id", "btnCancle");
-
-  btnDetailDelete.addEventListener("click", async function (e) {
-    e.preventDefault();
-    const detailDelete = await axios.delete<Partial<TodoResponse>>(
-      `http://localhost:33088/api/todolist/${itemId}`
-    );
-    linkTo("/");
-  });
-
-  detailTodo.appendChild(detailTitle);
-  detailTodo.appendChild(detailContent);
-  detailTodo.appendChild(btnDetailWrapper);
-  btnDetailWrapper.appendChild(btnDetailEdit);
-  btnDetailWrapper.appendChild(btnDetailDelete);
-
-  return detailTodo;
-};
 
 const TodoList = async function () {
-  // 전체 div 박스
   const page = document.createElement("div");
-  page.setAttribute("id", "page");
-
-  // ul 묶는 div 박스
   const content = document.createElement("div");
+  const btnMainWrapper = document.createElement("div");
+  const btnRegist = document.createElement("button");
+  const btnTitle = document.createTextNode("등록");
+  const btnReset = document.createElement("button");
+  const btnResetTitle = document.createTextNode("전체삭제");
+  const ul = document.createElement("ul");
+  
+  page.setAttribute("id", "page");
   content.setAttribute("id", "content");
+  btnMainWrapper.setAttribute("id", "btnMainWrapper");
+  ul.setAttribute("id", "todolist");
+  btnRegist.setAttribute("id", "btnEnroll");
+  btnReset.setAttribute("id", "btnReset");
+  
+  content.appendChild(ul);
+  content.appendChild(btnMainWrapper);
+  btnRegist.appendChild(btnTitle);
+  btnMainWrapper.appendChild(btnRegist);
+  btnReset.appendChild(btnResetTitle);
+  btnMainWrapper.appendChild(btnReset);
   
   let response: AxiosResponse<TodoListResponse> ;
-  
   try {
     const instance = axios.create({
       baseURL: "http://localhost:33088/api",
@@ -90,10 +44,6 @@ const TodoList = async function () {
     response = await axios<TodoListResponse>(
       "http://localhost:33088/api/todolist"
       );
-
-    // ul
-    const ul = document.createElement("ul");
-    ul.setAttribute("id", "todolist");
 
     if (!response.data.items.length) {
       const item = document.createElement("span");
@@ -170,23 +120,6 @@ const TodoList = async function () {
       todoContent.appendChild(title);
       ul.appendChild(li);
     });
-    content.appendChild(ul);
-
-    const btnMainWrapper = document.createElement("div");
-    btnMainWrapper.setAttribute("id", "btnMainWrapper");
-    content.appendChild(btnMainWrapper);
-
-    const btnRegist = document.createElement("button");
-    const btnTitle = document.createTextNode("등록");
-    btnRegist.setAttribute("id", "btnEnroll");
-    btnRegist.appendChild(btnTitle);
-    btnMainWrapper.appendChild(btnRegist);
-
-    const btnReset = document.createElement("button");
-    const btnResetTitle = document.createTextNode("전체삭제");
-    btnReset.setAttribute("id", "btnReset");
-    btnReset.appendChild(btnResetTitle);
-    btnMainWrapper.appendChild(btnReset);
 
     btnRegist.addEventListener("click", () => {
       linkTo("regist");
@@ -213,6 +146,7 @@ const TodoList = async function () {
       content.appendChild(error);
     }
   }
+
   page.appendChild(Header("What to do today?😙"));
   page.appendChild(content);
   page.appendChild(Footer());
