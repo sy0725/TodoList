@@ -2,6 +2,7 @@
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
+import axios from 'axios'
 
 const toggleDetailTodo = function (title, content, itemId) {
   const detailTodo = document.createElement("form");
@@ -79,7 +80,7 @@ const TodoList = async function () {
         'Content-Type': 'application/json',
       },
     });
-    response = await axios("http://localhost:33088/api/todolist");
+    response = await axios<TodoListResponse>("http://localhost:33088/api/todolist");
 
     // ul
     const ul = document.createElement("ul");
