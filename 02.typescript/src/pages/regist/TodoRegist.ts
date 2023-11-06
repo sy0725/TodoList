@@ -31,8 +31,6 @@ const TodoRegist = function () {
 
   page.appendChild(Header("Make Your Plan"));
   page.appendChild(detailPage);
-  page.appendChild(Footer());
-  page.appendChild(detailPage);
   detailPage.appendChild(title);
   detailPage.appendChild(detail);
   detailPage.appendChild(btnWrapper);
@@ -40,7 +38,8 @@ const TodoRegist = function () {
   btnWrapper.appendChild(btnAdd);
   btnCancle.appendChild(btnCancleTodo);
   btnWrapper.appendChild(btnCancle);
-
+  page.appendChild(Footer());
+  
   const instance = axios.create({
     baseURL: "http://localhost:33088/api",
     headers: {

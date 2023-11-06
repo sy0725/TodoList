@@ -43,7 +43,7 @@ const TodoList = async function () {
     });
     response = await axios<TodoListResponse>(
       "http://localhost:33088/api/todolist"
-      );
+    );
 
     if (!response.data.items.length) {
       const item = document.createElement("span");
@@ -83,7 +83,7 @@ const TodoList = async function () {
               : title.setAttribute("class", "title");
           })
           .catch(function (error) {
-            if(error instanceof Error){
+            if (error instanceof Error) {
               console.log(error);
             }
           });
@@ -92,21 +92,21 @@ const TodoList = async function () {
       title.appendChild(text);
 
       let showToggle = true;
-      li.addEventListener("click", async function (event : Event) {
-        if (event.target instanceof Element){
+      li.addEventListener("click", async function (event: Event) {
+        if (event.target instanceof Element) {
           if (event.target!.classList.contains("title")) {
             const detailResponse = await axios<TodoResponse>(
               `http://localhost:33088/api/todolist/${item._id}`
             );
             const { title, content } = detailResponse.data?.item;
-            
+
             const openToggleDetail = toggleDetailTodo(title, content, item._id);
             if (showToggle) {
               event.preventDefault();
-  
+
               todoContent.appendChild(openToggleDetail);
             } else {
-              if(todoContent.lastChild){
+              if (todoContent.lastChild) {
                 todoContent.removeChild(todoContent.lastChild);
               }
             }
@@ -125,23 +125,24 @@ const TodoList = async function () {
       linkTo("regist");
     });
 
-    btnReset.addEventListener("click", async function (e : Event) {
+    btnReset.addEventListener("click", async function (e: Event) {
       e.preventDefault();
-      response.data?.items.forEach((item) => instance
-        .delete(`/todolist/${item._id}`)
-        .then(function (response) {
-          console.log(response);
-          linkTo("/");
-        })
-        .catch(function (error) {
-          if (error instanceof Error) {
-            console.log(error);
-          }
-        })
+      response.data?.items.forEach((item) =>
+        instance
+          .delete(`/todolist/${item._id}`)
+          .then(function (response) {
+            console.log(response);
+            linkTo("/");
+          })
+          .catch(function (error) {
+            if (error instanceof Error) {
+              console.log(error);
+            }
+          })
       );
     });
-  } catch (error : any) {
-    if(error instanceof Error){
+  } catch (error: any) {
+    if (error instanceof Error) {
       const error = document.createTextNode("일시적인 오류 발생");
       content.appendChild(error);
     }
