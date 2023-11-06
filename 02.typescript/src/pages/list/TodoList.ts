@@ -2,11 +2,13 @@
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from "axios";
 
-
-
-const toggleDetailTodo  = function (title : string, content : string, itemId : number) {
+const toggleDetailTodo = function (
+  title: string,
+  content: string,
+  itemId: number
+) {
   const detailTodo = document.createElement("form");
   detailTodo.setAttribute("id", "detailTodo");
 
@@ -16,7 +18,7 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
 
   let titleEdit = title;
   detailTitle.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLInputElement){
+    if (e.target instanceof HTMLInputElement) {
       titleEdit = e.target.value;
     }
   });
@@ -27,8 +29,7 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
 
   let contentEdit = content;
   detailContent.addEventListener("change", function (e) {
-    if(e.target instanceof HTMLTextAreaElement)
-    contentEdit = e.target.value;
+    if (e.target instanceof HTMLTextAreaElement) contentEdit = e.target.value;
   });
 
   const btnDetailWrapper = document.createElement("div");
@@ -73,13 +74,14 @@ const TodoList = async function () {
   // 전체 div 박스
   const page = document.createElement("div");
   page.setAttribute("id", "page");
+  page.setAttribute("class", "page");
 
   // ul 묶는 div 박스
   const content = document.createElement("div");
   content.setAttribute("id", "content");
-  
-  let response: AxiosResponse<TodoListResponse> ;
-  
+
+  let response: AxiosResponse<TodoListResponse>;
+
   try {
     const instance = axios.create({
       baseURL: "http://localhost:33088/api",
@@ -89,7 +91,7 @@ const TodoList = async function () {
     });
     response = await axios<TodoListResponse>(
       "http://localhost:33088/api/todolist"
-      );
+    );
 
     // ul
     const ul = document.createElement("ul");
@@ -133,7 +135,7 @@ const TodoList = async function () {
               : title.setAttribute("class", "title");
           })
           .catch(function (error) {
-            if(error instanceof Error){
+            if (error instanceof Error) {
               console.log(error);
             }
           });
@@ -142,21 +144,21 @@ const TodoList = async function () {
       title.appendChild(text);
 
       let showToggle = true;
-      li.addEventListener("click", async function (event : Event) {
-        if (event.target instanceof Element){
+      li.addEventListener("click", async function (event: Event) {
+        if (event.target instanceof Element) {
           if (event.target!.classList.contains("title")) {
             const detailResponse = await axios<TodoResponse>(
               `http://localhost:33088/api/todolist/${item._id}`
             );
             const { title, content } = detailResponse.data?.item;
-            
+
             const openToggleDetail = toggleDetailTodo(title, content, item._id);
             if (showToggle) {
               event.preventDefault();
-  
+
               todoContent.appendChild(openToggleDetail);
             } else {
-              if(todoContent.lastChild){
+              if (todoContent.lastChild) {
                 todoContent.removeChild(todoContent.lastChild);
               }
             }
@@ -192,23 +194,24 @@ const TodoList = async function () {
       linkTo("regist");
     });
 
-    btnReset.addEventListener("click", async function (e : Event) {
+    btnReset.addEventListener("click", async function (e: Event) {
       e.preventDefault();
-      response.data?.items.forEach((item) => instance
-        .delete(`/todolist/${item._id}`)
-        .then(function (response) {
-          console.log(response);
-          linkTo("/");
-        })
-        .catch(function (error) {
-          if (error instanceof Error) {
-            console.log(error);
-          }
-        })
+      response.data?.items.forEach((item) =>
+        instance
+          .delete(`/todolist/${item._id}`)
+          .then(function (response) {
+            console.log(response);
+            linkTo("/");
+          })
+          .catch(function (error) {
+            if (error instanceof Error) {
+              console.log(error);
+            }
+          })
       );
     });
-  } catch (error : any) {
-    if(error instanceof Error){
+  } catch (error: any) {
+    if (error instanceof Error) {
       const error = document.createTextNode("일시적인 오류 발생");
       content.appendChild(error);
     }
