@@ -1,4 +1,6 @@
 // 할일 목록
+import axios from "axios";
+
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
@@ -75,23 +77,25 @@ const TodoList = async function () {
   let response;
   try {
     const instance = axios.create({
-      baseURL: 'http://localhost:33088/api',
+      baseURL: "http://localhost:33088/api",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
-    response = await axios<TodoListResponse>("http://localhost:33088/api/todolist");
+    response = await axios<TodoListResponse>(
+      "http://localhost:33088/api/todolist"
+    );
 
     // ul
     const ul = document.createElement("ul");
     ul.setAttribute("id", "todolist");
 
     if (!response.data.items.length) {
-      const item = document.createElement('span');
-      const itemContent = document.createTextNode('할일을 추가해주세요.')
+      const item = document.createElement("span");
+      const itemContent = document.createTextNode("할일을 추가해주세요.");
       item.appendChild(itemContent);
       content.appendChild(item);
-    };
+    }
 
     response.data?.items.reverse().forEach(async (item) => {
       // li
@@ -101,10 +105,10 @@ const TodoList = async function () {
       const title = document.createElement("div");
 
       if (item.done) {
-        title.setAttribute("class", "title isDone")
+        title.setAttribute("class", "title isDone");
         checkbox.checked = true;
       } else {
-        title.setAttribute("class", "title")
+        title.setAttribute("class", "title");
         checkbox.checked = false;
       }
 
@@ -113,19 +117,21 @@ const TodoList = async function () {
       li.setAttribute("class", "list");
       const text = document.createTextNode(item.title);
 
-      checkbox.addEventListener('click', async function () {
+      checkbox.addEventListener("click", async function () {
         await instance
           .patch(`/todolist/${item._id}`, {
             done: checkbox.checked ? true : false,
           })
           .then(function (response) {
             console.log(response);
-            checkbox.checked ? title.setAttribute("class", "title isDone") : title.setAttribute("class", "title");
+            checkbox.checked
+              ? title.setAttribute("class", "title isDone")
+              : title.setAttribute("class", "title");
           })
           .catch(function (error) {
             console.log(error);
           });
-      })
+      });
 
       title.appendChild(text);
 
@@ -159,34 +165,36 @@ const TodoList = async function () {
     btnMainWrapper.setAttribute("id", "btnMainWrapper");
     content.appendChild(btnMainWrapper);
 
-    const btnRegist = document.createElement('button');
-    const btnTitle = document.createTextNode('등록');
+    const btnRegist = document.createElement("button");
+    const btnTitle = document.createTextNode("등록");
     btnRegist.setAttribute("id", "btnEnroll");
     btnRegist.appendChild(btnTitle);
     btnMainWrapper.appendChild(btnRegist);
 
-    const btnReset = document.createElement('button');
-    const btnResetTitle = document.createTextNode('전체삭제');
+    const btnReset = document.createElement("button");
+    const btnResetTitle = document.createTextNode("전체삭제");
     btnReset.setAttribute("id", "btnReset");
     btnReset.appendChild(btnResetTitle);
     btnMainWrapper.appendChild(btnReset);
 
-    btnRegist.addEventListener('click', () => {
-      linkTo('regist');
+    btnRegist.addEventListener("click", () => {
+      linkTo("regist");
     });
 
-    btnReset.addEventListener('click', async function (e) {
+    btnReset.addEventListener("click", async function (e) {
       e.preventDefault();
-      await response.data?.items.forEach(item => instance
-        .delete(`/todolist/${item._id}`)
-        .then(function (response) {
-          console.log(response);
-          linkTo('/');
-        })
-        .catch(function (error) {
-          console.log(error);
-        }));
-    })
+      await response.data?.items.forEach((item) =>
+        instance
+          .delete(`/todolist/${item._id}`)
+          .then(function (response) {
+            console.log(response);
+            linkTo("/");
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+      );
+    });
   } catch (err) {
     const error = document.createTextNode("일시적인 오류 발생");
     content.appendChild(error);
