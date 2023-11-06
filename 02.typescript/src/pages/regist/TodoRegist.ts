@@ -5,6 +5,7 @@ import "./TodoRegist.css";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
+import { postTodoItem } from "../../API/axios";
 
 const TodoRegist = function () {
   const page = document.createElement("div");
@@ -39,7 +40,7 @@ const TodoRegist = function () {
   btnCancle.appendChild(btnCancleTodo);
   btnWrapper.appendChild(btnCancle);
   page.appendChild(Footer());
-  
+
   const instance = axios.create({
     baseURL: "http://localhost:33088/api",
     headers: {
@@ -53,11 +54,12 @@ const TodoRegist = function () {
       alert("할일을 입력해주세요!");
     }
 
-    await instance
-      .post("/todolist", {
-        title: title.value,
-        content: detail.value || "상세 내용이 없습니다.",
-      })
+    const body = {
+      title: title.value,
+      content: detail.value || "상세 내용이 없습니다.",
+    };
+
+    postTodoItem(body)
       .then(function () {
         linkTo("/");
       })
