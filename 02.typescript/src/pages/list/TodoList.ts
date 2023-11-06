@@ -2,8 +2,13 @@
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
-import  toggleDetailTodo  from "./../update/TodoUpdate";
-import { getTodoItem, deleteTodoItem, patchTodoItem ,getTodoList} from "../../API/axios";
+import toggleDetailTodo from "./../update/TodoUpdate";
+import {
+  getTodoItem,
+  deleteTodoItem,
+  patchTodoItem,
+  getTodoList,
+} from "../../API/axios";
 
 const TodoList = async function () {
   const page = document.createElement("div");
@@ -14,22 +19,21 @@ const TodoList = async function () {
   const btnReset = document.createElement("button");
   const btnResetTitle = document.createTextNode("전체삭제");
   const ul = document.createElement("ul");
-  
+
   page.setAttribute("id", "page");
   content.setAttribute("id", "content");
   ul.setAttribute("id", "todolist");
   btnMainWrapper.setAttribute("id", "btnMainWrapper");
   btnRegist.setAttribute("id", "btnEnroll");
   btnReset.setAttribute("id", "btnReset");
-  
 
   btnRegist.appendChild(btnTitle);
   btnReset.appendChild(btnResetTitle);
   btnMainWrapper.appendChild(btnRegist);
   btnMainWrapper.appendChild(btnReset);
-  
+
   try {
-    const response = await getTodoList()
+    const response = await getTodoList();
 
     if (!response.data.items.length) {
       const item = document.createElement("span");
@@ -66,7 +70,7 @@ const TodoList = async function () {
           done: checkbox.checked ? true : false,
         };
         await patchTodoItem(item._id, body)
-          .then(function () { 
+          .then(function () {
             checkbox.checked
               ? title.setAttribute("class", "title isDone")
               : title.setAttribute("class", "title");
@@ -81,13 +85,13 @@ const TodoList = async function () {
       li.addEventListener("click", async function (event: Event) {
         if (event.target instanceof Element) {
           if (event.target!.classList.contains("title")) {
-            const detailResponse = await getTodoItem(item._id)
+            const detailResponse = await getTodoItem(item._id);
             const { title, content } = detailResponse.data?.item;
 
             const openToggleDetail = toggleDetailTodo(title, content, item._id);
             if (showToggle) {
               event.preventDefault();
-              
+
               todoContent.appendChild(openToggleDetail);
             } else {
               if (todoContent.lastChild) {
@@ -113,8 +117,8 @@ const TodoList = async function () {
     btnReset.addEventListener("click", async function (e: Event) {
       e.preventDefault();
       response.data?.items.forEach((item) =>
-          deleteTodoItem(item._id)
-          .then(function (response) {
+        deleteTodoItem(item._id)
+          .then(function () {
             linkTo("/");
           })
           .catch(function (error) {
@@ -124,7 +128,7 @@ const TodoList = async function () {
           })
       );
     });
-  } catch (error: any) {
+  } catch (error) {
     if (error instanceof Error) {
       const error = document.createTextNode("일시적인 오류 발생");
       content.appendChild(error);

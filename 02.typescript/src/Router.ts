@@ -5,7 +5,7 @@ import Error404 from "./pages/errors/Error404";
 
 async function getPage() {
   let page;
-  console.log(location);
+  // console.log(location);
   switch (location.pathname) {
     case "/":
       page = await TodoList();
