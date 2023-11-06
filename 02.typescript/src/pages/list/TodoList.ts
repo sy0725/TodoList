@@ -1,12 +1,12 @@
 // 할일 목록
-import axios from "axios";
-
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
-const toggleDetailTodo = function (title, content, itemId) {
+
+
+const toggleDetailTodo  = function (title : string, content : string, itemId : number) {
   const detailTodo = document.createElement("form");
   detailTodo.setAttribute("id", "detailTodo");
 
@@ -16,7 +16,9 @@ const toggleDetailTodo = function (title, content, itemId) {
 
   let titleEdit = title;
   detailTitle.addEventListener("change", function (e) {
-    titleEdit = e.target.value;
+    if(e.target instanceof HTMLInputElement){
+      titleEdit = e.target.value;
+    }
   });
 
   const detailContent = document.createElement("textarea");
@@ -25,6 +27,7 @@ const toggleDetailTodo = function (title, content, itemId) {
 
   let contentEdit = content;
   detailContent.addEventListener("change", function (e) {
+    if(e.target instanceof HTMLTextAreaElement)
     contentEdit = e.target.value;
   });
 
@@ -38,7 +41,7 @@ const toggleDetailTodo = function (title, content, itemId) {
   btnDetailEdit.addEventListener("click", async function (e) {
     e.preventDefault();
     const body = { title: titleEdit, content: contentEdit };
-    const detailEdit = await axios.patch(
+    const detailEdit = await axios.patch<TodoResponse>(
       `http://localhost:33088/api/todolist/${itemId}`,
       body
     );
@@ -51,7 +54,7 @@ const toggleDetailTodo = function (title, content, itemId) {
 
   btnDetailDelete.addEventListener("click", async function (e) {
     e.preventDefault();
-    const detailDelete = await axios.delete(
+    const detailDelete = await axios.delete<Partial<TodoResponse>>(
       `http://localhost:33088/api/todolist/${itemId}`
     );
     linkTo("/");
@@ -74,7 +77,9 @@ const TodoList = async function () {
   // ul 묶는 div 박스
   const content = document.createElement("div");
   content.setAttribute("id", "content");
-  let response;
+  
+  let response: AxiosResponse<TodoListResponse> ;
+  
   try {
     const instance = axios.create({
       baseURL: "http://localhost:33088/api",
@@ -84,7 +89,7 @@ const TodoList = async function () {
     });
     response = await axios<TodoListResponse>(
       "http://localhost:33088/api/todolist"
-    );
+      );
 
     // ul
     const ul = document.createElement("ul");
@@ -122,35 +127,41 @@ const TodoList = async function () {
           .patch(`/todolist/${item._id}`, {
             done: checkbox.checked ? true : false,
           })
-          .then(function (response) {
-            console.log(response);
+          .then(function () {
             checkbox.checked
               ? title.setAttribute("class", "title isDone")
               : title.setAttribute("class", "title");
           })
           .catch(function (error) {
-            console.log(error);
+            if(error instanceof Error){
+              console.log(error);
+            }
           });
       });
 
       title.appendChild(text);
 
       let showToggle = true;
-      li.addEventListener("click", async function (event) {
-        if (event.target.classList.contains("title")) {
-          const detailResponse = await axios(
-            `http://localhost:33088/api/todolist/${item._id}`
-          );
-          const { title, content } = detailResponse.data?.item;
-          const openToggleDetail = toggleDetailTodo(title, content, item._id);
-          if (showToggle) {
-            event.preventDefault();
-
-            todoContent.appendChild(openToggleDetail);
-          } else {
-            todoContent.removeChild(todoContent.lastChild);
+      li.addEventListener("click", async function (event : Event) {
+        if (event.target instanceof Element){
+          if (event.target!.classList.contains("title")) {
+            const detailResponse = await axios<TodoResponse>(
+              `http://localhost:33088/api/todolist/${item._id}`
+            );
+            const { title, content } = detailResponse.data?.item;
+            
+            const openToggleDetail = toggleDetailTodo(title, content, item._id);
+            if (showToggle) {
+              event.preventDefault();
+  
+              todoContent.appendChild(openToggleDetail);
+            } else {
+              if(todoContent.lastChild){
+                todoContent.removeChild(todoContent.lastChild);
+              }
+            }
+            showToggle = !showToggle;
           }
-          showToggle = !showToggle;
         }
       });
 
@@ -181,23 +192,26 @@ const TodoList = async function () {
       linkTo("regist");
     });
 
-    btnReset.addEventListener("click", async function (e) {
+    btnReset.addEventListener("click", async function (e : Event) {
       e.preventDefault();
-      await response.data?.items.forEach((item) =>
-        instance
-          .delete(`/todolist/${item._id}`)
-          .then(function (response) {
-            console.log(response);
-            linkTo("/");
-          })
-          .catch(function (error) {
+      response.data?.items.forEach((item) => instance
+        .delete(`/todolist/${item._id}`)
+        .then(function (response) {
+          console.log(response);
+          linkTo("/");
+        })
+        .catch(function (error) {
+          if (error instanceof Error) {
             console.log(error);
-          })
+          }
+        })
       );
     });
-  } catch (err) {
-    const error = document.createTextNode("일시적인 오류 발생");
-    content.appendChild(error);
+  } catch (error : any) {
+    if(error instanceof Error){
+      const error = document.createTextNode("일시적인 오류 발생");
+      content.appendChild(error);
+    }
   }
   page.appendChild(Header("What to do today?😙"));
   page.appendChild(content);
