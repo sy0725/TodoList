@@ -1,5 +1,4 @@
 // 할일 등록
-import axios from "axios";
 import "./TodoRegist.css";
 
 import Header from "../../layout/Header";

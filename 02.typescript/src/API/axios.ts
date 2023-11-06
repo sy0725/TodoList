@@ -13,7 +13,7 @@ interface Data {
   done?: boolean;
 }
 
-const getTodoList = async () => {
+export const getTodoList = async () => {
   const response = await instance.get<TodoListResponse>("/todolist");
   return response;
 };
@@ -25,12 +25,12 @@ export const deleteTodoItem = async (id: number) => {
   return response;
 };
 
-const getTodoItem = async (id: number) => {
+export const getTodoItem = async (id: number) => {
   const response = await instance.get<TodoResponse>(`todolist/${id}`);
   return response;
 };
 
-export const patchTodoItem = async (itemId: number, body: Data) => {
+export const patchTodoItem = async (itemId: number, body: Partial<Data>) => {
   const response = await instance.patch<TodoResponse>(
     `todolist/${itemId}`,
     body

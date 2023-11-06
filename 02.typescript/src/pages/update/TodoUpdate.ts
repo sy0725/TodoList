@@ -1,5 +1,4 @@
 import { linkTo } from "../../Router";
-import axios from "axios";
 import { patchTodoItem, deleteTodoItem } from "../../API/axios";
 
 // 할일 수정
