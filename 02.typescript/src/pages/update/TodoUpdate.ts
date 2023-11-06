@@ -8,35 +8,37 @@ import axios from 'axios'
 const toggleDetailTodo  = function (title : string, content : string, itemId : number) {
 
   const detailTodo = document.createElement("form");
-  detailTodo.setAttribute("id", "detailTodo");
-
   const detailTitle = document.createElement("input");
-  detailTitle.value = title;
-  detailTitle.setAttribute("id", "detailTitle");
-
+  const detailContent = document.createElement("textarea");
+  const btnDetailWrapper = document.createElement("div");
+  const btnDetailEdit = document.createElement("button");
+  const btnDetailDelete = document.createElement("button");
   let titleEdit = title;
+  let contentEdit = content;
+
+  
+  detailTodo.setAttribute("id", "detailTodo");
+  detailTitle.setAttribute("id", "detailTitle");
+  detailContent.setAttribute("id", "detailContent");
+  btnDetailWrapper.setAttribute("id", "btnDetailWrapper");
+  btnDetailEdit.setAttribute("id", "btnAdd");
+  btnDetailDelete.setAttribute("id", "btnCancle");
+
+  detailTitle.value = title;
+  detailContent.textContent = content;
+  btnDetailEdit.textContent = "수정";
+  btnDetailDelete.textContent = "삭제";
+
   detailTitle.addEventListener("change", function (e) {
     if(e.target instanceof HTMLInputElement){
       titleEdit = e.target.value;
     }
   });
 
-  const detailContent = document.createElement("textarea");
-  detailContent.textContent = content;
-  detailContent.setAttribute("id", "detailContent");
-
-  let contentEdit = content;
   detailContent.addEventListener("change", function (e) {
     if(e.target instanceof HTMLTextAreaElement)
     contentEdit = e.target.value;
   });
-
-  const btnDetailWrapper = document.createElement("div");
-  btnDetailWrapper.setAttribute("id", "btnDetailWrapper");
-
-  const btnDetailEdit = document.createElement("button");
-  btnDetailEdit.textContent = "수정";
-  btnDetailEdit.setAttribute("id", "btnAdd");
 
   btnDetailEdit.addEventListener("click", async function (e) {
     e.preventDefault();
@@ -47,10 +49,6 @@ const toggleDetailTodo  = function (title : string, content : string, itemId : n
     );
     linkTo("/");
   });
-
-  const btnDetailDelete = document.createElement("button");
-  btnDetailDelete.textContent = "삭제";
-  btnDetailDelete.setAttribute("id", "btnCancle");
 
   btnDetailDelete.addEventListener("click", async function (e) {
     e.preventDefault();

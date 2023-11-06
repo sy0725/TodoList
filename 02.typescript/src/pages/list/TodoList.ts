@@ -6,9 +6,6 @@ import axios, { AxiosResponse } from 'axios'
 import  toggleDetailTodo  from "./../update/TodoUpdate";
 
 
-
-
-
 const TodoList = async function () {
   const page = document.createElement("div");
   const content = document.createElement("div");
@@ -21,16 +18,16 @@ const TodoList = async function () {
   
   page.setAttribute("id", "page");
   content.setAttribute("id", "content");
-  btnMainWrapper.setAttribute("id", "btnMainWrapper");
   ul.setAttribute("id", "todolist");
+  btnMainWrapper.setAttribute("id", "btnMainWrapper");
   btnRegist.setAttribute("id", "btnEnroll");
   btnReset.setAttribute("id", "btnReset");
   
   content.appendChild(ul);
   content.appendChild(btnMainWrapper);
   btnRegist.appendChild(btnTitle);
-  btnMainWrapper.appendChild(btnRegist);
   btnReset.appendChild(btnResetTitle);
+  btnMainWrapper.appendChild(btnRegist);
   btnMainWrapper.appendChild(btnReset);
   
   let response: AxiosResponse<TodoListResponse> ;
@@ -54,10 +51,16 @@ const TodoList = async function () {
 
     response.data?.items.reverse().forEach(async (item) => {
       // li
+      const checkbox = document.createElement("input");
       const li = document.createElement("li");
       const todoContent = document.createElement("div");
-      const checkbox = document.createElement("input");
       const title = document.createElement("div");
+      const text = document.createTextNode(item.title);
+      let showToggle = true;
+
+      checkbox.setAttribute("type", "checkbox");
+      checkbox.setAttribute("class", "check");
+      li.setAttribute("class", "list");
 
       if (item.done) {
         title.setAttribute("class", "title isDone");
@@ -66,11 +69,6 @@ const TodoList = async function () {
         title.setAttribute("class", "title");
         checkbox.checked = false;
       }
-
-      checkbox.setAttribute("type", "checkbox");
-      checkbox.setAttribute("class", "check");
-      li.setAttribute("class", "list");
-      const text = document.createTextNode(item.title);
 
       checkbox.addEventListener("click", async function () {
         await instance
@@ -89,9 +87,6 @@ const TodoList = async function () {
           });
       });
 
-      title.appendChild(text);
-
-      let showToggle = true;
       li.addEventListener("click", async function (event: Event) {
         if (event.target instanceof Element) {
           if (event.target!.classList.contains("title")) {
@@ -103,7 +98,7 @@ const TodoList = async function () {
             const openToggleDetail = toggleDetailTodo(title, content, item._id);
             if (showToggle) {
               event.preventDefault();
-
+              
               todoContent.appendChild(openToggleDetail);
             } else {
               if (todoContent.lastChild) {
@@ -115,6 +110,7 @@ const TodoList = async function () {
         }
       });
 
+      title.appendChild(text);
       li.appendChild(checkbox);
       li.appendChild(todoContent);
       todoContent.appendChild(title);
