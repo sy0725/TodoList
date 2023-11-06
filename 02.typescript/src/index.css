@@ -1,0 +1,195 @@
+h1 {
+  text-align: center;
+}
+
+button {
+  border-radius: 50px;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+textarea,
+input,
+form {
+  border-radius: 5px;
+  border: none;
+}
+
+footer {
+  text-align: center;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#detailPage {
+  background: #d9d9d9;
+  width: 360px;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#detailForm {
+  width: 80%;
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
+#btnMainWrapper,
+#divWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+#btnAdd {
+  background-color: #79e226;
+  color: #fff;
+}
+
+#btnCancle {
+  background-color: #ef5142;
+  color: #fff;
+}
+
+#btnAdd,
+#btnCancle {
+  padding: 5px 16px;
+}
+
+#title {
+  border-radius: 5px;
+  padding: 4px;
+  width: 296px;
+  height: 30px;
+}
+
+#detail {
+  border-radius: 5px;
+  padding: 4px;
+  width: 296px;
+  height: 150px;
+}
+
+#todolist {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  background-color: #d9d9d9;
+  width: 260px;
+  height: 40px;
+  border-radius: 75px;
+  color: black;
+  text-align: left;
+  justify-content: start;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.title:hover {
+  background-color: #79e226;
+}
+
+.isDone {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.list {
+  display: flex;
+}
+
+.check {
+  margin-right: 10px;
+  width: 20px;
+}
+
+#btnEnroll {
+  padding: 5px 16px;
+  width: 60px;
+  height: 30px;
+}
+
+#btnReset {
+  padding: 5px 16px;
+  height: 30px;
+}
+
+#btnEnroll:hover {
+  color: white;
+  background: #79e226;
+}
+
+#btnReset:hover {
+  color: white;
+  background: #ef5142;
+}
+
+#content {
+  width: 300px;
+}
+
+#todolist,
+.list {
+  width: 100%;
+}
+
+#detailTodo {
+  background: #d9d9d9;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+#detailTitle,
+#detailContent {
+  background: #fff;
+  width: 90%;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+#detailContent {
+  height: 100px;
+}
+
+#btnDetailWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+  margin-right: 20px;
+}
