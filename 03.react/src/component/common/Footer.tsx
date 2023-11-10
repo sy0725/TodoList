@@ -1,14 +1,9 @@
-// const Footer = function () {
-//   const footerNode = document.createElement('footer');
-//   const pNode = document.createElement('p');
-//   const content = document.createTextNode('Todolist 10조 Typescript Project');
-//   pNode.appendChild(content);
-//   footerNode.appendChild(pNode);
-//   return footerNode;
-// };
-
-// export default Footer;
+import styled from 'styled-components';
 
 export const Footer = () => {
-  return <div>Footer</div>;
+  return <StyledFooter>Todolist 10조 React Project</StyledFooter>;
 };
+
+const StyledFooter = styled.footer`
+  text-align: center;
+`;
