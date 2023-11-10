@@ -52,13 +52,14 @@ export const TodoListMain = () => {
         {data?.map((item) => (
           <li key={item._id}>
             <div>
-              <input type='checkbox' onChange={() => checkTodoDone(item)} checked={item.done} />
+              <CheckBox type='checkbox' onChange={() => checkTodoDone(item)} checked={item.done} />
               <TodoTitle onClick={() => showTodoDetail(item._id)}>{item.title}</TodoTitle>
             </div>
 
             <TodoUpdate idNum={item._id} toggle={toggle[item._id]} getData={getData} />
           </li>
         ))}
+        {!data?.length && <TodoGuide>할일을 추가해주세요.</TodoGuide>}
       </TodoList>
       <ButtonContainer>
         <Button onClick={moveToRegist}>등록</Button>
@@ -73,10 +74,10 @@ export const TodoListMain = () => {
 const TodoList = styled.ul`
   width: 300px;
   list-style: none;
-  padding: 0;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 35px;
   margin: 0 auto 20px;
 
   li div {
@@ -90,6 +91,10 @@ const TodoList = styled.ul`
   }
 `;
 
+const CheckBox = styled.input`
+  margin: 3px 10px 3px 4px;
+`;
+
 const TodoTitle = styled.h2`
   display: inline-block;
   background-color: #d9d9d9;
@@ -100,10 +105,15 @@ const TodoTitle = styled.h2`
   color: black;
   text-align: left;
   justify-content: start;
+  margin: 0;
   padding-left: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
+`;
+
+const TodoGuide = styled.span`
+  text-align: center;
 `;
 
 // BUTTON
@@ -116,14 +126,23 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   border: none;
   border-radius: 20px;
-  background-color: #79e127;
-  color: #fff;
+  background-color: #d9d9d9;
+  color: #black;
   padding: 6px 12px;
   flex-shrink: 0;
   cursor: pointer;
 
   &.redButton {
-    margin-left: 20px;
+    margin-left: 10px;
+  }
+
+  &:hover {
+    background: #79e127;
+    color: white;
+  }
+
+  &.redButton:hover {
     background-color: #ef5242;
+    color: white;
   }
 `;
