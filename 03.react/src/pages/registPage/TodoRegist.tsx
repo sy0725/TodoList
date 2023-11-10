@@ -20,7 +20,13 @@ export const TodoRegist = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (input.content === '') {
+      input.content = REGIST_PAGE_CONSTANT_TEXT.INPUT_WRAN;
+    }
+
     const res = await postTodoItem(input);
+
     if (res.status === 200) {
       moveToBack();
     }
@@ -32,7 +38,6 @@ export const TodoRegist = () => {
       setInput(initialState);
     }
   };
-
   return (
     <Wrap onSubmit={onSubmit}>
       <InputContainer>
