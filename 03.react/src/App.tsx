@@ -1,7 +1,9 @@
+import { AppRouter } from './pages/Router';
+
 function App() {
   return (
     <>
-      <h1>Hello world</h1>
+      <AppRouter />
     </>
   );
 }
