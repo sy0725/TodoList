@@ -23,3 +23,9 @@ interface TodoResponse {
   ok: number;
   item: TodoItem;
 }
+
+// 등록
+interface TodoInput {
+  title: string;
+  content: string;
+}

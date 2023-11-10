@@ -1,16 +1,25 @@
-// const Header = function(title: string){
-//   const headerNode = document.createElement('header');
-//   const h1 = document.createElement('h1');
-//   const headerTitle = document.createTextNode(title);
-//   h1.appendChild(headerTitle);
-//   headerNode.appendChild(h1);
-//   return headerNode;
-// };
-
-// export default Header;
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Header = () => {
-  return <div>
-    <h1>헤더</h1>
-  </div>;
+  const location = useLocation();
+  return (
+    <StyledHeader>
+      <h1>{location.pathname === '/regist' ? 'Make Your Plan' : 'What to do Today'}</h1>
+    </StyledHeader>
+  );
 };
+
+const StyledHeader = styled.div`
+  text-align: center;
+  background-color: #d9d9d9;
+  margin: 0 auto;
+  width: 360px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  h1 {
+    padding-top: 20px;
+    margin: 0;
+  }
+`;
