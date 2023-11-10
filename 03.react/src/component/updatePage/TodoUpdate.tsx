@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { getTodoItem, patchTodoItem, deleteTodoItem } from "../../API/axios";
-import { useState, useEffect } from "react";
+import styled from 'styled-components';
+import { getTodoItem, patchTodoItem, deleteTodoItem } from '../../API/axios';
+import { useState, useEffect } from 'react';
 
 const initailState = {
-  title: "",
-  content: "",
+  title: '',
+  content: '',
 };
 
 interface TodoUpdateProps {
@@ -13,11 +13,7 @@ interface TodoUpdateProps {
   getData: Function;
 }
 
-export default function TodoUpdate({
-  idNum,
-  toggle,
-  getData,
-}: TodoUpdateProps) {
+export default function TodoUpdate({ idNum, toggle, getData }: TodoUpdateProps) {
   const [immediate, setImmediate] = useState(initailState);
 
   const getDetailData = async () => {
@@ -41,9 +37,7 @@ export default function TodoUpdate({
     getData();
   };
 
-  const onChangeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setImmediate((prev) => ({ ...prev, [name]: value }));
@@ -53,22 +47,13 @@ export default function TodoUpdate({
     <>
       {toggle && (
         <DetailForm>
-          <input
-            type="text"
-            value={immediate.title}
-            name="title"
-            onChange={onChangeHandler}
-          />
-          <textarea
-            value={immediate.content}
-            name="content"
-            onChange={onChangeHandler}
-          />
+          <input type='text' value={immediate.title} name='title' onChange={onChangeHandler} />
+          <textarea value={immediate.content} name='content' onChange={onChangeHandler} />
           <BtnDetailWrapper>
-            <UpdateButton type="button" onClick={updateTodo}>
+            <UpdateButton type='button' onClick={updateTodo}>
               수정
             </UpdateButton>
-            <DeleteButton type="button" onClick={deleteTodo}>
+            <DeleteButton type='button' onClick={deleteTodo}>
               삭제
             </DeleteButton>
           </BtnDetailWrapper>
@@ -80,13 +65,13 @@ export default function TodoUpdate({
 
 const DetailForm = styled.form`
   background: #d9d9d9;
-  width: 100%;
+  width: 100% - 27px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 10px 0;
-  margin-top: 10px;
+  margin: 10px 0 0 27px;
   border-radius: 6px;
 
   input,
@@ -100,6 +85,7 @@ const DetailForm = styled.form`
 
   textarea {
     height: 100px;
+    resize: none;
   }
 `;
 
@@ -119,8 +105,10 @@ const BtnDetailWrapper = styled.div`
 
 const UpdateButton = styled.button`
   background-color: #79e226;
+  color: white;
 `;
 
 const DeleteButton = styled.button`
   background-color: #ef5142;
+  color: white;
 `;
