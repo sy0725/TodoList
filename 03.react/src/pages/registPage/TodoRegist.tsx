@@ -1,101 +1,125 @@
+import { postTodoItem } from '../../API/axios';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { REGIST_PAGE_CONSTANT_TEXT, initialState } from './TodoRegistSettings';
 
 export const TodoRegist = () => {
+  const [input, setInput] = useState<TodoInput>(initialState);
   const navigate = useNavigate();
+
   const moveToBack = () => {
     navigate(-1);
   };
+
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    setInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = await postTodoItem(input);
+    if (res.status === 200) {
+      moveToBack();
+    }
+  };
+
+  const onCancel = () => {
+    let useAnswer = window.confirm(REGIST_PAGE_CONSTANT_TEXT.WRITE_CANCEL);
+    if (useAnswer) {
+      setInput(initialState);
+    }
+  };
+
   return (
-    <>
-      <StyledButton onClick={moveToBack}>뒤로가기</StyledButton>
-      <h1>등록 페이지: 등록 기능</h1>
-      <h2>
-        <ul>
-          <li>메인 페이지: 등록페이지로 이동, 수정, 삭제</li>
-          <li>등록 페이지: 등록만</li>
-        </ul>
-      </h2>
-    </>
+    <Wrap onSubmit={onSubmit}>
+      <InputContainer>
+        <InputTitle
+          name='title'
+          placeholder={REGIST_PAGE_CONSTANT_TEXT.INPUT_TITLE}
+          type='text'
+          onChange={onChangeInput}
+          value={input.title}
+        />
+        <InputContent
+          name='content'
+          placeholder={REGIST_PAGE_CONSTANT_TEXT.INPUT_CONTENT}
+          onChange={onChangeInput}
+          value={input.content}
+        />
+      </InputContainer>
+      <ButtonContainer>
+        <Button>등록</Button>
+        <Button type='button' className='redButton' onClick={onCancel}>
+          {REGIST_PAGE_CONSTANT_TEXT.BUTTON_CANCEL}
+        </Button>
+      </ButtonContainer>
+    </Wrap>
   );
 };
 
-const StyledButton = styled.button`
-  width: 100px;
-  background-color: red;
-  color: white;
+// ROOT
+const Wrap = styled.form`
+  width: 360px;
+  height: 780px;
+  background-color: #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;
 
-// // 할일 등록
-// import "./TodoRegist.css";
+// INPUT
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  margin: 0 auto;
+  max-width: calc(100% - 100px);
+  margin-top: 20px;
+  gap: 15px;
+`;
 
-// import Header from "../../layout/Header";
-// import Footer from "../../layout/Footer";
-// import { linkTo } from "../../Router";
-// import { postTodoItem } from "../../API/axios";
+const InputTitle = styled.input`
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-left: 12px;
+`;
 
-// const TodoRegist = function () {
-//   const page = document.createElement("div");
-//   const detailPage = document.createElement("form");
-//   const title = document.createElement("input");
-//   const detail = document.createElement("textarea");
-//   const btnWrapper = document.createElement("div");
-//   const btnAdd = document.createElement("button");
-//   const btnAddTodo = document.createTextNode("등록");
-//   const btnCancle = document.createElement("button");
-//   const btnCancleTodo = document.createTextNode("취소");
+const InputContent = styled.textarea`
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  height: 140px;
+  resize: none;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 12px 12px 0;
+`;
 
-//   page.setAttribute("id", "page");
-//   page.setAttribute("class", "detailPage");
-//   detailPage.setAttribute("id", "detailForm");
-//   title.setAttribute("id", "title");
-//   title.setAttribute("type", "text");
-//   title.setAttribute("placeholder", "할일을 입력하세요.");
-//   detail.setAttribute("placeholder", "상세 내용을 입력하세요.");
-//   detail.setAttribute("id", "detail");
-//   btnAdd.setAttribute("id", "btnAdd");
-//   btnCancle.setAttribute("id", "btnCancle");
-//   btnWrapper.setAttribute("id", "divWrapper");
+// BUTTON
+const ButtonContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  margin-left: 210px;
+  gap: 5px;
+`;
 
-//   page.appendChild(Header("Make Your Plan"));
-//   page.appendChild(detailPage);
-//   detailPage.appendChild(title);
-//   detailPage.appendChild(detail);
-//   detailPage.appendChild(btnWrapper);
-//   btnAdd.appendChild(btnAddTodo);
-//   btnWrapper.appendChild(btnAdd);
-//   btnCancle.appendChild(btnCancleTodo);
-//   btnWrapper.appendChild(btnCancle);
-//   page.appendChild(Footer());
+const Button = styled.button`
+  border: none;
+  border-radius: 20px;
+  background-color: #79e127;
+  color: #fff;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  cursor: pointer;
 
-//   btnAdd.addEventListener("click", async function (e) {
-//     e.preventDefault();
-//     if (!title.value) {
-//       alert("할일을 입력해주세요!");
-//     }
-
-//     const body = {
-//       title: title.value,
-//       content: detail.value || "상세 내용이 없습니다.",
-//     };
-
-//     postTodoItem(body)
-//       .then(function () {
-//         linkTo("/");
-//       })
-//       .catch(function (error) {
-//         if (error instanceof Error) {
-//           console.error(error);
-//         }
-//       });
-//   });
-
-//   btnCancle.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     linkTo("/");
-//   });
-
-//   return page;
-// };
-
-// export default TodoRegist;
+  &.redButton {
+    background-color: #ef5242;
+  }
+`;
