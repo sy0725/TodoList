@@ -21,7 +21,7 @@ const StyledHeader = styled.div<{ isregist: boolean }>`
   border-top-right-radius: 5px;
 
   h1 {
-    padding-top: 20px;
+    padding: 20px 0;
     margin: 0;
   }
 `;

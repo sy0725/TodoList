@@ -82,9 +82,8 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 360px;
-  margin: 0 auto;
+  margin: 15px auto 20px;
   max-width: calc(100% - 100px);
-  margin-top: 20px;
   gap: 15px;
 `;
 
@@ -120,7 +119,7 @@ const Button = styled.button`
   border-radius: 20px;
   background-color: #79e127;
   color: #fff;
-  padding: 6px 12px;
+  padding: 6px 14px;
   flex-shrink: 0;
   cursor: pointer;
 
