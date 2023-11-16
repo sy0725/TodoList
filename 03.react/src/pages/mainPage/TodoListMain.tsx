@@ -2,7 +2,11 @@ import TodoUpdate from '../../component/updatePage/TodoUpdate';
 import { getTodoList, deleteTodoItem, patchTodoItem } from '../../API/axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import * as S from '../../styles/TodoListStyles';
+
+// fillter = 유저는 TodoList done 값으로 필터링을 할 수 있다.
+// sorting = todo를 업데이트한 날짜를 기반으로 오름차순과 내림차순으로 설정 가능하다
+// search = 특정 단어를 검색 제목이나 컨텐츠에 속해있는지 여부에 따라 검색가능
 
 export const TodoListMain = () => {
   const [data, setData] = useState<TodoItem[]>();
@@ -48,101 +52,29 @@ export const TodoListMain = () => {
 
   return (
     <>
-      <TodoList>
+      <S.TodoList>
         {data?.map((item) => (
           <li key={item._id}>
             <div>
-              <CheckBox type='checkbox' onChange={() => checkTodoDone(item)} checked={item.done} />
-              <TodoTitle onClick={() => showTodoDetail(item._id)}>{item.title}</TodoTitle>
+              <S.CheckBox
+                type='checkbox'
+                onChange={() => checkTodoDone(item)}
+                checked={item.done}
+              />
+              <S.TodoTitle onClick={() => showTodoDetail(item._id)}>{item.title}</S.TodoTitle>
             </div>
 
             <TodoUpdate idNum={item._id} toggle={toggle[item._id]} getData={getData} />
           </li>
         ))}
-        {!data?.length && <TodoGuide>할일을 추가해주세요.</TodoGuide>}
-      </TodoList>
-      <ButtonContainer>
-        <Button onClick={moveToRegist}>등록</Button>
-        <Button className='redButton' onClick={deleteAllTodo}>
+        {!data?.length && <S.TodoGuide>할일을 추가해주세요.</S.TodoGuide>}
+      </S.TodoList>
+      <S.ButtonContainer>
+        <S.Button onClick={moveToRegist}>등록</S.Button>
+        <S.Button className='redButton' onClick={deleteAllTodo}>
           전체삭제
-        </Button>
-      </ButtonContainer>
+        </S.Button>
+      </S.ButtonContainer>
     </>
   );
 };
-
-const TodoList = styled.ul`
-  width: 300px;
-  list-style: none;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-  margin: 0 auto 20px;
-
-  li div {
-    display: flex;
-  }
-
-  & > input {
-    display: inline-block;
-    margin-right: 10px;
-    width: 20px;
-  }
-`;
-
-const CheckBox = styled.input`
-  margin: 3px 10px 3px 4px;
-`;
-
-const TodoTitle = styled.h2`
-  display: inline-block;
-  background-color: #d9d9d9;
-  width: 260px;
-  height: 40px;
-  font-size: 16px;
-  border-radius: 75px;
-  color: black;
-  text-align: left;
-  justify-content: start;
-  margin: 0;
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-
-const TodoGuide = styled.span`
-  text-align: center;
-`;
-
-// BUTTON
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 60px;
-`;
-
-const Button = styled.button`
-  border: none;
-  border-radius: 20px;
-  background-color: #d9d9d9;
-  color: #black;
-  padding: 6px 12px;
-  flex-shrink: 0;
-  cursor: pointer;
-
-  &.redButton {
-    margin-left: 10px;
-  }
-
-  &:hover {
-    background: #79e127;
-    color: white;
-  }
-
-  &.redButton:hover {
-    background-color: #ef5242;
-    color: white;
-  }
-`;
