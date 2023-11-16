@@ -1,7 +1,7 @@
 # 🦁 멋쟁이 사자처럼 Front-End School Plus 1기: 미니 프로젝트(TODO List)
 
 > **[기존 프로젝트](https://github.com/FESP01-TodoApp-Project10/FESP01-TodoApp-Project10.git)** <br />  
-> **최종 프로젝트: [정소이](https://github.com/uniS2)** <br/> **개발기간: 2023.11.16**
+> **최종 프로젝트: [전선용](https://github.com/sy0725)** <br/> **개발기간: 2023.11.16**
 
 > 🐼 **GitHub URL**: [FESP01-TodoList-Me](주소) <br>
 
